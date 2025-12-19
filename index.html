@@ -1,12 +1,146 @@
-<html>
-<head>
-    <title>Sample Page</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <h1>Welcome to the Sample Page</h1>
-    <p>This is a simple HTML page.</p>
-    <script src="script.js"></script>
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Portfolio — Workout Showcase</title>
+        <link rel="stylesheet" href="assets/styles.css">
+    </head>
+    <body>
+        <header class="site-header">
+            <div class="container header-inner">
+                <a class="logo" href="#">Jayachandran — Dev</a>
+                <nav class="nav">
+                    <a href="#about">About</a>
+                    <a href="#projects">Projects</a>
+                    <a href="#hobbies">Hobbies</a>
+                    <a href="#contact">Contact</a>
+                </nav>
+                <a class="resume-link" href="#" title="Download resume">Resume</a>
+                <button class="menu-toggle" aria-label="Toggle menu">☰</button>
+            </div>
+        </header>
+
+        <main>
+            <section class="hero">
+                <div class="container hero-grid">
+                    <div class="hero-text">
+                        <h1>Software Developer & Fitness Enthusiast</h1>
+                        <p class="lead">I build clean, maintainable apps and keep active—this portfolio highlights projects and workouts. Replace content and images to personalize.</p>
+                        <p><a class="btn" href="#projects">See Projects</a> <a class="btn" href="#workouts">See Workouts</a></p>
+                    </div>
+                    <div class="hero-image">
+                        <div class="photo-frame">
+                            <img id="profileImage" src="https://via.placeholder.com/400x400.png?text=Your+Photo" alt="Your photo">
+                        </div>
+                        <p class="photo-note">Replace this image by setting `src` to your file (e.g., <code>assets/me.jpg</code>).</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="about" class="container about">
+                <h2>About Me</h2>
+                <p>I&rsquo;m a software developer focused on front-end and small full-stack apps. I enjoy thoughtful design, clean APIs, and consistent training. Use the Projects section to showcase code and links to repositories.</p>
+            </section>
+
+            <section id="projects" class="container projects">
+                <div class="projects-header">
+                    <h2>Selected Projects</h2>
+                    <p class="meta">A few recent projects — add repo links and descriptions in <code>assets/scripts.js</code>.</p>
+                </div>
+                <div id="projectList" class="project-grid">
+                    <!-- JS will populate project cards here -->
+                </div>
+            </section>
+
+            <section id="skills" class="container skills">
+                <h2>Skills</h2>
+                <div class="skill-badges">
+                    <span class="skill-badge">JavaScript</span>
+                    <span class="skill-badge">TypeScript</span>
+                    <span class="skill-badge">React</span>
+                    <span class="skill-badge">Node.js</span>
+                    <span class="skill-badge">HTML & CSS</span>
+                    <span class="skill-badge">Testing</span>
+                </div>
+            </section>
+
+            <section id="education" class="container education">
+                <h2>Education</h2>
+                <div class="edu-list">
+                    <article class="edu-item">
+                        <h3>10th Grade — Devagar Higher Secondary School</h3>
+                        <div class="edu-meta">Arupukottai, Virudhunagar — 86%</div>
+                    </article>
+
+                    <article class="edu-item">
+                        <h3>12th Grade (Math Biology) — Govt Higher Secondary School</h3>
+                        <div class="edu-meta">Mullai Nagar, Hosur — 86%</div>
+                    </article>
+
+                    <article class="edu-item">
+                        <h3>B.Sc. Computer Science — MGR College</h3>
+                        <div class="edu-meta">Degree — 85%</div>
+                    </article>
+                </div>
+
+                <div class="edu-tech">
+                    <h4>Technologies / Topics learned</h4>
+                    <p class="meta">Web development (HTML, CSS, JavaScript), Python, Java, C, SQL, RDBMS, Data Structures & Algorithms (DSA)</p>
+                </div>
+            </section>
+
+            <section id="experience" class="container experience">
+                <h2>Experience</h2>
+                <div class="exp-list">
+                    <article class="exp-item">
+                        <h3>Software Developer – Frontend</h3>
+                        <div class="exp-meta">Process Drive India — July 2024 – Present</div>
+                        <ul>
+                            <li>Designed and developed scalable frontend applications using Vue.js, Vuetify, Pinia, and TypeScript.</li>
+                            <li>Built reusable and maintainable UI components following best practices to ensure consistency and performance.</li>
+                            <li>Implemented business logic handling, including complex data flow and payment-related logic.</li>
+                            <li>Wrote unit tests using Vitest to validate core logic and ensure UI reliability.</li>
+                            <li>Contributed to UI automation testing to improve test coverage and reduce regression issues.</li>
+                            <li>Collaborated closely with backend and QA teams to deliver stable, production-ready features.</li>
+                            <li>Actively expanding skill sets toward full-stack development, focusing on backend concepts, architecture, and integration.</li>
+                        </ul>
+                    </article>
+                </div>
+            </section>
+
+            <section id="hobbies" class="container hobbies">
+                <div class="hobbies-header">
+                    <h2>Hobbies</h2>
+                    <p class="meta">Personal interests that keep me balanced outside of development.</p>
+                </div>
+
+                <div id="hobbyList" class="hobby-grid" aria-live="polite">
+                    <!-- JS will populate hobby cards here -->
+                </div>
+            </section>
+
+            <section id="contact" class="container contact">
+                <h2>Contact</h2>
+                <p>Want to collaborate? Replace this with your preferred contact details or a contact form.</p>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <div class="container">© <span id="year"></span> Jayachandran — Built with a clean responsive layout.</div>
+        </footer>
+        <!-- Project detail modal (populated by JS) -->
+        <div id="projectModal" class="modal" aria-hidden="true">
+            <div class="modal-inner" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+                <button class="modal-close" aria-label="Close">✕</button>
+                <h3 id="modalTitle"></h3>
+                <p id="modalDesc"></p>
+                <pre id="modalCode" style="display:none"><code id="modalCodeBlock"></code></pre>
+                <div id="modalTech" class="meta"></div>
+                <p><a id="modalLink" class="btn" href="#" target="_blank" rel="noopener">Open Project</a></p>
+            </div>
+        </div>
+
+        <script src="assets/scripts.js"></script>
+    </body>
 </html>
