@@ -9,6 +9,26 @@
     {id:5,title:'Cooking',desc:'Experimenting with simple, healthy recipes.'}
   ];
 
+  // Skills data
+  const skills = [
+    'JavaScript',
+    'TypeScript',
+    'React',
+    'Node.js',
+    'HTML & CSS',
+    'Testing',
+    'Express',
+    'MongoDB',
+    'D3'
+  ];
+
+  // Education data
+  const education = [
+    {id:1,degree:'10th Grade',school:'Devagar Higher Secondary School',location:'Arupukottai, Virudhunagar',marks:'86%'},
+    {id:2,degree:'12th Grade (Math Biology)',school:'Govt Higher Secondary School',location:'Mullai Nagar, Hosur',marks:'86%'},
+    {id:3,degree:'B.Sc. Computer Science',school:'MGR College',location:'Degree',marks:'85%'}
+  ];
+
   // Fake project data for a software developer
   let projects = [
     {id:1,title:'Personal Site',desc:'A responsive portfolio built with vanilla JS and modern CSS.',tech:['HTML','CSS','JS'],link:'#',code:`// simple init\nconsole.log('Hello world')`},
@@ -19,6 +39,20 @@
   function fmtDate(iso){
     const d = new Date(iso);
     return d.toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'});
+  }
+
+  function renderSkills(){
+    const el = document.getElementById('skillList');
+    if(!el) return;
+    el.innerHTML = skills.map(skill => {
+      const skillName = skill === 'HTML & CSS' ? 'HTML' : skill;
+      return `
+        <span class="skill-badge">
+          ${getTechIcon(skillName)}
+          <span>${skill}</span>
+        </span>
+      `;
+    }).join('');
   }
 
   function renderHobbies(){
@@ -34,18 +68,52 @@
     }).join('');
   }
 
+  function renderEducation(){
+    const el = document.getElementById('eduList');
+    if(!el) return;
+    el.innerHTML = education.map(edu=>{
+      return `
+        <article class="edu-item">
+          <div class="edu-head">
+            <svg class="edu-icon cap-icon" aria-hidden="true"><use href="#cap"></use></svg>
+            <div>
+              <h3>${edu.degree}</h3>
+              <p class="edu-school">${edu.school}</p>
+            </div>
+          </div>
+          <div class="edu-details">
+            <div class="edu-detail">
+              <svg class="detail-icon" aria-hidden="true"><use href="#location"></use></svg>
+              <span>${edu.location}</span>
+            </div>
+            <div class="edu-detail">
+              <svg class="detail-icon" aria-hidden="true"><use href="#grade"></use></svg>
+              <span>${edu.marks}</span>
+            </div>
+          </div>
+        </article>
+      `;
+    }).join('');
+  }
+
   function renderProjects(){
     const el = document.getElementById('projectList');
     if(!el) return;
     el.innerHTML = projects.map(p=>{
+      const techIcons = p.tech.map(t => `
+        <span class="tech-badge">
+          ${getTechIcon(t)}
+          <span class="tech-name">${t}</span>
+        </span>
+      `).join('');
       return `
         <article class="project-card">
           <div class="project-head">${getIconFor('project')}<h3>${p.title}</h3></div>
           <p>${p.desc}</p>
+          <div class="project-tech">${techIcons}</div>
           <div class="project-links">
             <a class="btn" href="${p.link}" target="_blank" rel="noopener">View</a>
             <button class="btn details-btn" data-id="${p.id}" type="button">Details</button>
-            <div class="meta">${p.tech.join(' · ')}</div>
           </div>
         </article>
       `;
@@ -66,6 +134,27 @@
     };
     const id = map[key] || 'project';
     return `<svg class="icon" aria-hidden="true"><use href="#${id}"></use></svg>`;
+  }
+
+  // Get tech/language icon for project tech stack
+  function getTechIcon(tech){
+    const iconMap = {
+      'HTML':'html5',
+      'CSS':'css3',
+      'JS':'javascript',
+      'JavaScript':'javascript',
+      'TypeScript':'typescript',
+      'React':'react',
+      'Vue':'vue',
+      'Node.js':'nodejs',
+      'Express':'express',
+      'MongoDB':'mongodb',
+      'D3':'d3',
+      'Python':'javascript', // fallback
+      'Java':'javascript'    // fallback
+    };
+    const iconId = iconMap[tech] || 'project';
+    return `<svg class="tech-icon" aria-hidden="true"><use href="#${iconId}"></use></svg>`;
   }
 
   // Modal handling for project details
@@ -166,7 +255,9 @@
 
   // init
   document.getElementById('year').textContent = new Date().getFullYear();
+  renderSkills();
   renderHobbies();
+  renderEducation();
   renderProjects();
 
   // Mobile menu toggle
