@@ -1,234 +1,954 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Portfolio — Workout Showcase</title>
-        <link rel="stylesheet" href="assets/styles.css">
-    </head>
-    <body>
-        <a class="skip-link" href="#main-content">Skip to content</a>
-        <header class="site-header">
-            <div class="container header-inner" role="banner">
-                <a class="logo" href="#" aria-label="Home">Jayachandran — Dev</a>
-                <nav class="nav" aria-label="Primary navigation">
-                    <a href="#about">About</a>
-                    <a href="#projects">Projects</a>
-                    <a href="#hobbies">Hobbies</a>
-                    <a href="#contact">Contact</a>
-                </nav>
-                <a class="resume-link" href="#" title="Download resume">Resume</a>
-                <button class="theme-toggle" aria-label="Toggle theme">🌓</button>
-                <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
-            </div>
-        </header>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jayachandran - Innovative Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-        <main id="main-content" role="main">
-            <section class="hero">
-                <div class="container hero-grid">
+        :root {
+            --bg-primary: #0a0e27;
+            --bg-secondary: #151933;
+            --text-primary: #e4e4f1;
+            --text-secondary: #a0a3bd;
+            --accent-1: #667eea;
+            --accent-2: #764ba2;
+            --accent-3: #f093fb;
+            --accent-glow: rgba(102, 126, 234, 0.4);
+            --card-bg: rgba(21, 25, 51, 0.6);
+            --card-border: rgba(102, 126, 234, 0.2);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.15;
+            background: 
+                radial-gradient(circle at 20% 50%, var(--accent-1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, var(--accent-2) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, var(--accent-3) 0%, transparent 50%);
+            animation: bgPulse 15s ease infinite;
+        }
+
+        @keyframes bgPulse {
+            0%, 100% { opacity: 0.15; transform: scale(1); }
+            50% { opacity: 0.25; transform: scale(1.1); }
+        }
+
+        /* Skip Link */
+        .skip-link {
+            position: absolute;
+            top: -100px;
+            left: 20px;
+            background: var(--accent-1);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            z-index: 9999;
+            transition: top 0.3s;
+        }
+
+        .skip-link:focus {
+            top: 20px;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(10, 14, 39, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+        }
+
+        nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-3));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-1), var(--accent-3));
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .resume-btn {
+            padding: 12px 28px;
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px var(--accent-glow);
+        }
+
+        .resume-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px var(--accent-glow);
+        }
+
+        /* Mobile Menu */
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Main Content */
+        main {
+            position: relative;
+            z-index: 1;
+            padding-top: 80px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: calc(100vh - 80px);
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+            width: 100%;
+        }
+
+        .hero-text h1 {
+            font-size: 64px;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, var(--text-primary), var(--accent-3));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .hero-text p {
+            font-size: 20px;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+            line-height: 1.8;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            animation: fadeInUp 0.8s ease 0.4s both;
+        }
+
+        .btn-primary, .btn-secondary {
+            padding: 16px 32px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+            color: white;
+            box-shadow: 0 4px 15px var(--accent-glow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px var(--accent-glow);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--accent-1);
+            border: 2px solid var(--accent-1);
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent-1);
+            color: white;
+        }
+
+        /* Profile Image */
+        .hero-image {
+            position: relative;
+            animation: fadeInRight 0.8s ease 0.3s both;
+        }
+
+        .profile-card {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            margin: 0 auto;
+        }
+
+        .profile-glow {
+            position: absolute;
+            inset: -20px;
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-3));
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            filter: blur(40px);
+            opacity: 0.4;
+            animation: morphing 8s ease-in-out infinite;
+        }
+
+        @keyframes morphing {
+            0%, 100% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
+            25% { border-radius: 58% 42% 75% 25% / 76% 46% 54% 24%; }
+            50% { border-radius: 50% 50% 33% 67% / 55% 27% 73% 45%; }
+            75% { border-radius: 33% 67% 58% 42% / 63% 68% 32% 37%; }
+        }
+
+        .profile-image {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            overflow: hidden;
+            border: 3px solid rgba(102, 126, 234, 0.3);
+            animation: morphing 8s ease-in-out infinite;
+        }
+
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Floating Elements */
+        .floating-element {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-element:nth-child(1) {
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-element:nth-child(2) {
+            top: 60%;
+            right: 15%;
+            animation-delay: 2s;
+        }
+
+        .floating-element:nth-child(3) {
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-30px); }
+        }
+
+        /* Section Styles */
+        section {
+            padding: 100px 0;
+            position: relative;
+        }
+
+        .section-title {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 60px;
+            text-align: center;
+            background: linear-gradient(135deg, var(--text-primary), var(--accent-3));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Projects Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 32px;
+        }
+
+        .project-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 32px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-1), var(--accent-3));
+            transform: scaleX(0);
+            transition: transform 0.4s;
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent-1);
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.3);
+        }
+
+        .project-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .project-card h3 {
+            font-size: 24px;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+
+        .project-card p {
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            line-height: 1.8;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .tech-tag {
+            padding: 6px 16px;
+            background: rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 20px;
+            font-size: 14px;
+            color: var(--accent-1);
+        }
+
+        .project-links {
+            display: flex;
+            gap: 12px;
+        }
+
+        .project-link {
+            padding: 10px 20px;
+            background: transparent;
+            border: 2px solid var(--accent-1);
+            border-radius: 20px;
+            color: var(--accent-1);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .project-link:hover {
+            background: var(--accent-1);
+            color: white;
+        }
+
+        /* Skills Section */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 24px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .skill-item {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: default;
+        }
+
+        .skill-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-1);
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.2);
+        }
+
+        .skill-item span {
+            display: block;
+            font-size: 40px;
+            margin-bottom: 12px;
+        }
+
+        .skill-item p {
+            color: var(--text-primary);
+            font-weight: 600;
+            margin: 0;
+        }
+
+        /* Contact Section */
+        .contact-content {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .contact-content p {
+            font-size: 20px;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .contact-item {
+            padding: 20px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .contact-item:hover {
+            border-color: var(--accent-1);
+            transform: translateX(5px);
+        }
+
+        /* Footer */
+        footer {
+            padding: 40px;
+            text-align: center;
+            color: var(--text-secondary);
+            border-top: 1px solid rgba(102, 126, 234, 0.1);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .hero-text h1 {
+                font-size: 48px;
+            }
+
+            .profile-card {
+                width: 300px;
+                height: 300px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-toggle {
+                display: block;
+            }
+
+            .nav-links.active {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: rgba(10, 14, 39, 0.98);
+                padding: 20px;
+                border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+            }
+
+            .section-title {
+                font-size: 36px;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 0 20px;
+            }
+
+            nav {
+                padding: 20px;
+            }
+
+            .hero-text h1 {
+                font-size: 36px;
+            }
+
+            .hero-text p {
+                font-size: 16px;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .profile-card {
+                width: 250px;
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <header role="banner">
+        <nav aria-label="Main navigation">
+            <div class="logo" aria-label="Home">Jayachandran</div>
+            <div class="nav-links" id="navLinks">
+                <a href="#about">About</a>
+                <a href="#projects">Projects</a>
+                <a href="#skills">Skills</a>
+                <a href="#contact">Contact</a>
+                <button class="resume-btn" id="downloadResume" aria-label="Download Resume">
+                    Download Resume
+                </button>
+            </div>
+            <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle navigation menu" aria-expanded="false">
+                ☰
+            </button>
+        </nav>
+    </header>
+
+    <main id="main-content" role="main">
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
                     <div class="hero-text">
-                        <h1>Software Developer & Fitness Enthusiast</h1>
-                        <p class="lead">I build clean, maintainable apps and keep active—this portfolio highlights projects and hobbies. Replace content and images to personalize.</p>
-                        <p><a class="btn" href="#projects">See Projects</a> <a class="btn" href="#hobbies">See Hobbies</a></p>
+                        <h1>Software Developer & Creative Innovator</h1>
+                        <p>I craft elegant digital experiences through clean code and innovative design. Specializing in frontend development with a passion for building scalable, user-centric applications.</p>
+                        <div class="cta-buttons">
+                            <a href="#projects" class="btn-primary">View My Work</a>
+                            <a href="#contact" class="btn-secondary">Get In Touch</a>
+                        </div>
                     </div>
                     <div class="hero-image">
-                        <div class="hero-decoration" aria-hidden="true">
-                            <!-- SVG wave background -->
-                            <svg class="hero-wave" viewBox="0 0 1200 200" preserveAspectRatio="none" role="img">
-                                <defs>
-                                    <linearGradient id="g1" x1="0" x2="1">
-                                        <stop offset="0%" stop-color="rgba(14,165,164,0.12)" />
-                                        <stop offset="100%" stop-color="rgba(14,165,164,0.04)" />
-                                    </linearGradient>
-                                </defs>
-                                <path d="M0,80 C150,200 350,0 600,80 C850,160 1050,40 1200,80 L1200,200 L0,200 Z" fill="url(#g1)"></path>
-                            </svg>
-                                                        <canvas id="heroCanvas" class="hero-canvas" aria-hidden="true"></canvas>
-                                                        <!-- SVG accent: glowing radial element that will pulse and parallax on scroll -->
-                                                        <svg class="hero-accent" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-                                                            <defs>
-                                                                <radialGradient id="glowGrad" cx="50%" cy="40%" r="60%">
-                                                                    <stop offset="0%" stop-color="rgba(14,165,164,0.95)" />
-                                                                    <stop offset="50%" stop-color="rgba(14,165,164,0.35)" />
-                                                                    <stop offset="100%" stop-color="rgba(14,165,164,0)" />
-                                                                </radialGradient>
-                                                            </defs>
-                                                            <circle cx="140" cy="40" r="48" fill="url(#glowGrad)" class="glow" />
-                                                        </svg>
-                                                        <!-- Particle controls (desktop only) -->
-                                                        <div id="particleControls" class="particle-controls" aria-hidden="false">
-                                                            <label>Count <input id="particleCount" type="range" min="6" max="120" value="22"></label>
-                                                            <label>Size <input id="particleSize" type="range" min="2" max="28" value="14"></label>
-                                                            <label>Speed <input id="particleSpeed" type="range" min="0.5" max="3.5" step="0.1" value="1"></label>
-                                                            <label>Palette
-                                                                <select id="particlePalette">
-                                                                    <option value="teal">Innovation Teal</option>
-                                                                    <option value="soft">Soft Greens</option>
-                                                                    <option value="mono">Muted Gray</option>
-                                                                </select>
-                                                            </label>
-                                                        </div>
+                        <div class="profile-card">
+                            <div class="profile-glow"></div>
+                            <div class="profile-image">
+                                <img src="assets\puppy-01.jpeg" alt="Jayachandran profile photo" id="profileImg">
+                            </div>
                         </div>
-                        <div class="photo-frame">
-                            <img id="profileImage" src="https://via.placeholder.com/400x400.png?text=Your+Photo" alt="Jayachandran profile photo">
-                        </div>
-                        <p class="photo-note">Replace this image by setting `src` to your file (e.g., <code>assets/me.jpg</code>).</p>
                     </div>
                 </div>
-            </section>
-
-            <section id="about" class="container about">
-                <h2>About Me</h2>
-                <p>I&rsquo;m a software developer focused on front-end and small full-stack apps. I enjoy thoughtful design, clean APIs, and consistent training. Use the Projects section to showcase code and links to repositories.</p>
-            </section>
-
-            <section id="projects" class="container projects">
-                <div class="projects-header">
-                    <h2>Selected Projects</h2>
-                    <p class="meta">A few recent projects — add repo links and descriptions in <code>assets/scripts.js</code>.</p>
-                </div>
-                <div id="projectList" class="project-grid">
-                    <!-- JS will populate project cards here -->
-                </div>
-            </section>
-
-            <section id="skills" class="container skills">
-                <h2>Skills</h2>
-                <div id="skillList" class="skill-badges"></div>
-            </section>
-
-            <section id="education" class="container education">
-                <h2>Education</h2>
-                <div id="eduList" class="edu-list"></div>
-
-                <div class="edu-tech">
-                    <h4>Technologies / Topics learned</h4>
-                    <p class="meta">Web development (HTML, CSS, JavaScript), Python, Java, C, SQL, RDBMS, Data Structures & Algorithms (DSA)</p>
-                </div>
-            </section>
-
-            <section id="experience" class="container experience">
-                <h2>Experience</h2>
-                <div class="exp-list">
-                    <article class="exp-item">
-                        <h3>Software Developer – Frontend</h3>
-                        <div class="exp-meta">Process Drive India — July 2024 – Present</div>
-                        <ul>
-                            <li>Designed and developed scalable frontend applications using Vue.js, Vuetify, Pinia, and TypeScript.</li>
-                            <li>Built reusable and maintainable UI components following best practices to ensure consistency and performance.</li>
-                            <li>Implemented business logic handling, including complex data flow and payment-related logic.</li>
-                            <li>Wrote unit tests using Vitest to validate core logic and ensure UI reliability.</li>
-                            <li>Contributed to UI automation testing to improve test coverage and reduce regression issues.</li>
-                            <li>Collaborated closely with backend and QA teams to deliver stable, production-ready features.</li>
-                            <li>Actively expanding skill sets toward full-stack development, focusing on backend concepts, architecture, and integration.</li>
-                        </ul>
-                    </article>
-                </div>
-            </section>
-
-            <section id="hobbies" class="container hobbies">
-                <div class="hobbies-header">
-                    <h2>Hobbies</h2>
-                    <p class="meta">Personal interests that keep me balanced outside of development.</p>
-                </div>
-
-                <div id="hobbyList" class="hobby-grid" aria-live="polite">
-                    <!-- JS will populate hobby cards here -->
-                </div>
-            </section>
-
-            <section id="contact" class="container contact">
-                <h2>Contact</h2>
-                <p>Want to collaborate? Replace this with your preferred contact details or a contact form.</p>
-            </section>
-        </main>
-
-        <footer class="site-footer" role="contentinfo">
-            <div class="container">© <span id="year"></span> Jayachandran — Built with a clean responsive layout.</div>
-        </footer>
-                <!-- Project detail modal (populated by JS) -->
-        <div id="projectModal" class="modal" aria-hidden="true">
-            <div class="modal-inner" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-                <button class="modal-close" aria-label="Close">✕</button>
-                <h3 id="modalTitle"></h3>
-                <p id="modalDesc"></p>
-                <pre id="modalCode" style="display:none"><code id="modalCodeBlock"></code></pre>
-                <div id="modalTech" class="meta"></div>
-                <p><a id="modalLink" class="btn" href="#" target="_blank" rel="noopener">Open Project</a></p>
+                <div class="floating-element"></div>
+                <div class="floating-element"></div>
+                <div class="floating-element"></div>
             </div>
-        </div>
+        </section>
 
-                <!-- Inline SVG sprite for icons (inlined to ensure <use> references work reliably) -->
-                <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
-                    <symbol id="running" viewBox="0 0 24 24">
-                        <path fill="currentColor" d="M13 3a2 2 0 110 4 2 2 0 010-4zM5.5 20.5l2.5-6 3 1-.5 2.5L9 20.5H5.5zM21 18.5l-1.5-1.5-4 2 .5 1.5L21 18.5zM14 11l3-1 2 2-1 3-3-1-1-3z"/>
-                    </symbol>
-                    <symbol id="cycling" viewBox="0 0 24 24">
-                        <path fill="currentColor" d="M5 16a3 3 0 100 6 3 3 0 000-6zm11-9a3 3 0 100 6 3 3 0 000-6zM6 15l4-5 3 1 3 5"/>
-                    </symbol>
-                    <symbol id="photography" viewBox="0 0 24 24">
-                        <path fill="currentColor" d="M4 7h2l1-2h6l1 2h2a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V9a2 2 0 012-2zM12 10a3 3 0 100 6 3 3 0 000-6z"/>
-                    </symbol>
-                    <symbol id="reading" viewBox="0 0 24 24">
-                        <path fill="currentColor" d="M3 5v14a1 1 0 001 1h14"/>
-                    </symbol>
-                    <symbol id="cooking" viewBox="0 0 24 24">
-                        <path fill="currentColor" d="M7 2v7h3V2H7zm7 0v7h3V2h-3zM4 12h16v2a6 6 0 01-6 6H10a6 6 0 01-6-6v-2z"/>
-                    </symbol>
-                    <symbol id="project" viewBox="0 0 24 24">
-                        <path fill="currentColor" d="M3 7h18v10H3z"/>
-                    </symbol>
-                    <symbol id="code" viewBox="0 0 24 24">
-                        <path fill="currentColor" d="M8.5 16.5L3 12l5.5-4.5M15.5 7.5L21 12l-5.5 4.5"/>
-                    </symbol>
-                    <!-- Tech/Language Icons -->
-                    <symbol id="javascript" viewBox="0 0 24 24">
-                        <rect fill="currentColor" x="2" y="2" width="20" height="20" rx="2"/>
-                        <text x="12" y="16" font-size="12" font-weight="bold" fill="#000" text-anchor="middle">JS</text>
-                    </symbol>
-                    <symbol id="react" viewBox="0 0 24 24">
-                        <circle fill="none" stroke="currentColor" stroke-width="1.5" cx="12" cy="11" r="4"/>
-                        <circle fill="none" stroke="currentColor" stroke-width="1.5" cx="12" cy="11" r="8" transform="rotate(0 12 11)"/>
-                        <circle fill="none" stroke="currentColor" stroke-width="1.5" cx="12" cy="11" r="8" transform="rotate(60 12 11)"/>
-                        <circle fill="none" stroke="currentColor" stroke-width="1.5" cx="12" cy="11" r="8" transform="rotate(120 12 11)"/>
-                    </symbol>
-                    <symbol id="nodejs" viewBox="0 0 24 24">
-                        <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m-2 15h4v-2h-4v2m0-4h4v-2h-4v2m0-4h4V7h-4v2z"/>
-                    </symbol>
-                    <symbol id="vue" viewBox="0 0 24 24">
-                        <path fill="currentColor" d="M3 1h3l9 16 9-16h3L12 22 3 1z"/>
-                    </symbol>
-                    <symbol id="typescript" viewBox="0 0 24 24">
-                        <rect fill="currentColor" x="2" y="2" width="20" height="20" rx="1"/>
-                        <text x="12" y="16" font-size="11" font-weight="bold" fill="#fff" text-anchor="middle">TS</text>
-                    </symbol>
-                    <symbol id="mongodb" viewBox="0 0 24 24">
-                        <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
-                    </symbol>
-                    <symbol id="express" viewBox="0 0 24 24">
-                        <text x="12" y="16" font-size="14" font-weight="bold" fill="currentColor" text-anchor="middle">E</text>
-                    </symbol>
-                    <symbol id="d3" viewBox="0 0 24 24">
-                        <path fill="currentColor" d="M4 4h4v4H4V4m6 0h4v4h-4V4m6 0h4v4h-4V4M4 10h4v4H4v-4m6 0h4v4h-4v-4m6 0h4v4h-4v-4M4 16h4v4H4v-4m6 0h4v4h-4v-4m6 0h4v4h-4v-4"/>
-                    </symbol>
-                    <symbol id="html5" viewBox="0 0 24 24">
-                        <path fill="currentColor" d="M2 2h20L18 20l-8 2-8-2L2 2m4 4h12l-1 10-7 2-7-2-.5-6h3l.3 3 4.2 1 4-1 .4-4H6l1-4h10l-.5-5H6v2z"/>
-                    </symbol>
-                    <symbol id="css3" viewBox="0 0 24 24">
-                        <path fill="currentColor" d="M3 3h18l-1.6 17.5L12 22l-7.4-1.5L3 3m2.5 2.5h13l-1.2 13.5-6.3 1.5-6.3-1.5L5.5 5.5m3.5 0v2.5h6v-2.5H9m0 4v2.5h6v-2.5H9m0 4v2.5h4v-2.5h-4z"/>
-                    </symbol>
-                    <!-- Education Icons -->
-                    <symbol id="cap" viewBox="0 0 24 24">
-                        <path fill="currentColor" d="M12 2L2 6v3c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V6l-10-4zm0 10c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z"/>
-                    </symbol>
-                    <symbol id="location" viewBox="0 0 24 24">
-                        <path fill="currentColor" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                    </symbol>
-                    <symbol id="grade" viewBox="0 0 24 24">
-                        <path fill="currentColor" d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5.04-6.71l-2.75-3.54-4.86 6.35c-.25.33-.09.8.29.8h11.84c.39 0 .54-.47.29-.8L13.96 8.29z"/>
-                    </symbol>
-                </svg>
+        <section id="about" class="container">
+            <h2 class="section-title">About Me</h2>
+            <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+                <p style="font-size: 18px; color: var(--text-secondary); line-height: 1.8;">
+                    I'm a passionate software developer with expertise in modern web technologies. Currently working as a Frontend Developer at Process Drive India, I specialize in Vue.js, TypeScript, and building scalable applications. I'm constantly learning and expanding my skills toward full-stack development.
+                </p>
+            </div>
+        </section>
 
-        <script src="assets/scripts.js"></script>
-    </body>
-</html>
+        <section id="projects" class="container">
+            <h2 class="section-title">Featured Projects</h2>
+            <div class="projects-grid">
+                <article class="project-card">
+                    <h3>Personal Portfolio</h3>
+                    <p>A modern, responsive portfolio showcasing my work with cutting-edge design and smooth animations.</p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">HTML5</span>
+                        <span class="tech-tag">CSS3</span>
+                        <span class="tech-tag">JavaScript</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" class="project-link" target="_blank" rel="noopener">View Live</a>
+                        <a href="#" class="project-link" target="_blank" rel="noopener">GitHub</a>
+                    </div>
+                </article>
+
+                <article class="project-card">
+                    <h3>Task Management API</h3>
+                    <p>RESTful API for task management with authentication, built with Node.js and Express.</p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">Node.js</span>
+                        <span class="tech-tag">Express</span>
+                        <span class="tech-tag">MongoDB</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" class="project-link" target="_blank" rel="noopener">View Live</a>
+                        <a href="#" class="project-link" target="_blank" rel="noopener">GitHub</a>
+                    </div>
+                </article>
+
+                <article class="project-card">
+                    <h3>Data Visualizer</h3>
+                    <p>Interactive data visualization dashboard using React and D3.js for complex datasets.</p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">React</span>
+                        <span class="tech-tag">D3.js</span>
+                        <span class="tech-tag">TypeScript</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" class="project-link" target="_blank" rel="noopener">View Live</a>
+                        <a href="#" class="project-link" target="_blank" rel="noopener">GitHub</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section id="skills" class="container">
+            <h2 class="section-title">Technical Skills</h2>
+            <div class="skills-grid">
+                <div class="skill-item">
+                    <span>⚛️</span>
+                    <p>React</p>
+                </div>
+                <div class="skill-item">
+                    <span>🎯</span>
+                    <p>Vue.js</p>
+                </div>
+                <div class="skill-item">
+                    <span>📘</span>
+                    <p>TypeScript</p>
+                </div>
+                <div class="skill-item">
+                    <span>🟢</span>
+                    <p>Node.js</p>
+                </div>
+                <div class="skill-item">
+                    <span>🎨</span>
+                    <p>CSS3</p>
+                </div>
+                <div class="skill-item">
+                    <span>🔥</span>
+                    <p>JavaScript</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="container">
+            <h2 class="section-title">Get In Touch</h2>
+            <div class="contact-content">
+                <p>I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.</p>
+                <div class="contact-info">
+                    <a href="mailto:your.email@example.com" class="contact-item">
+                        <span>📧</span>
+                        <span>your.email@example.com</span>
+                    </a>
+                    <a href="https://github.com/yourusername" class="contact-item" target="_blank" rel="noopener">
+                        <span>💻</span>
+                        <span>GitHub Profile</span>
+                    </a>
+                    <a href="https://linkedin.com/in/yourusername" class="contact-item" target="_blank" rel="noopener">
+                        <span>💼</span>
+                        <span>LinkedIn Profile</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer role="contentinfo">
+        <p>&copy; <span id="year"></span> Jayachandran. Designed & Built with passion.</p>
+    </footer>
+
+    <script>
+        // Set current year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Mobile menu toggle
+        const mobileToggle = document.getElementById('mobileToggle');
+        const navLinks = document.getElementById('navLinks');
+        
+        if (mobileToggle && navLinks) {
+            mobileToggle.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const isActive = navLinks.classList.toggle('active');
+                mobileToggle.setAttribute('aria-expanded', isActive);
+                console.log('Mobile menu toggled:', isActive);
+            });
+
+            // Close mobile menu on link click
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinks.classList.remove('active');
+                    mobileToggle.setAttribute('aria-expanded', 'false');
+                });
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!navLinks.contains(e.target) && !mobileToggle.contains(e.target)) {
+                    navLinks.classList.remove('active');
+                    mobileToggle.setAttribute('aria-expanded', 'false');
+                }
+            });
+        }
+
+        // Resume Download Function
+        function downloadResume() {
+            console.log('Download resume clicked');
+            
+            try {
+            // Create resume content
+            const resumeContent = `
+JAYACHANDRAN
+Software Developer - Frontend Specialist
+
+CONTACT
+Email: your.email@example.com
+Location: Hosūr, Tamil Nadu, IN
+GitHub: github.com/yourusername
+LinkedIn: linkedin.com/in/yourusername
+
+PROFESSIONAL SUMMARY
+Passionate software developer with expertise in modern web technologies, specializing in Vue.js, TypeScript, and building scalable frontend applications. Currently expanding skills toward full-stack development with focus on backend concepts, architecture, and integration.
+
+WORK EXPERIENCE
+
+Software Developer - Frontend
+Process Drive India | July 2024 - Present
+• Designed and developed scalable frontend applications using Vue.js, Vuetify, Pinia, and TypeScript
+• Built reusable and maintainable UI components following best practices
+• Implemented complex business logic and payment-related functionality
+• Wrote comprehensive unit tests using Vitest for core logic validation
+• Contributed to UI automation testing to improve coverage and reduce regression
+• Collaborated with backend and QA teams for stable production-ready features
+
+EDUCATION
+
+B.Sc. Computer Science
+MGR College | 85%
+
+12th Grade (Math Biology)
+Govt Higher Secondary School, Hosur | 86%
+
+10th Grade
+Devagar Higher Secondary School, Virudhunagar | 86%
+
+TECHNICAL SKILLS
+• Languages: JavaScript, TypeScript, Python, Java, C
+• Frontend: Vue.js, React, HTML5, CSS3, Vuetify
+• Backend: Node.js, Express
+• Database: MongoDB, SQL, RDBMS
+• Testing: Vitest, Unit Testing, UI Automation
+• Tools: Git, Pinia (State Management)
+• Concepts: Data Structures, Algorithms, RESTful APIs
+
+PROJECTS
+
+Personal Portfolio
+Modern responsive portfolio with innovative design and smooth animations
+Technologies: HTML5, CSS3, JavaScript
+
+Task Management API
+RESTful API with authentication for task management
+Technologies: Node.js, Express, MongoDB
+
+Data Visualizer
+Interactive dashboard for complex data visualization
+Technologies: React, D3.js, TypeScript
+
+HOBBIES & INTERESTS
+• Running & Fitness Training
+• Photography (Street & Landscape)
+• Reading Technical Books
+• Cooking & Recipe Experimentation
+• Cycling
+
+---
+Generated: ${new Date().toLocaleDateString()}
+            `.trim();
+
+                // Create blob and download
+                const blob = new Blob([resumeContent], { type: 'text/plain' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'Jayachandran_Resume.txt';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+
+                // Show notification
+                const btn = document.getElementById('downloadResume');
+                if (btn) {
+                    const originalText = btn.textContent;
+                    btn.textContent = '✓ Downloaded!';
+                    btn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+                    setTimeout(() => {
+                        btn.textContent = originalText;
+                        btn.style.background = '';
+                    }, 2000);
+                }
+                
+                console.log('Resume downloaded successfully');
+            } catch (error) {
+                console.error('Error downloading resume:', error);
+                alert('Sorry, there was an error downloading the resume. Please try again.');
+            }
+        }
+
+        // Add event listeners for resume download button
+        const resumeBtn = document.getElementById('downloadResume');
+        if (resumeBtn) {
+            resumeBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                downloadResume();
+            });
+        }
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.8s ease forwards';
+                }
+            });
