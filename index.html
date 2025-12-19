@@ -7,31 +7,70 @@
         <link rel="stylesheet" href="assets/styles.css">
     </head>
     <body>
+        <a class="skip-link" href="#main-content">Skip to content</a>
         <header class="site-header">
-            <div class="container header-inner">
-                <a class="logo" href="#">Jayachandran — Dev</a>
-                <nav class="nav">
+            <div class="container header-inner" role="banner">
+                <a class="logo" href="#" aria-label="Home">Jayachandran — Dev</a>
+                <nav class="nav" aria-label="Primary navigation">
                     <a href="#about">About</a>
                     <a href="#projects">Projects</a>
                     <a href="#hobbies">Hobbies</a>
                     <a href="#contact">Contact</a>
                 </nav>
                 <a class="resume-link" href="#" title="Download resume">Resume</a>
-                <button class="menu-toggle" aria-label="Toggle menu">☰</button>
+                <button class="theme-toggle" aria-label="Toggle theme">🌓</button>
+                <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
             </div>
         </header>
 
-        <main>
+        <main id="main-content" role="main">
             <section class="hero">
                 <div class="container hero-grid">
                     <div class="hero-text">
                         <h1>Software Developer & Fitness Enthusiast</h1>
-                        <p class="lead">I build clean, maintainable apps and keep active—this portfolio highlights projects and workouts. Replace content and images to personalize.</p>
-                        <p><a class="btn" href="#projects">See Projects</a> <a class="btn" href="#workouts">See Workouts</a></p>
+                        <p class="lead">I build clean, maintainable apps and keep active—this portfolio highlights projects and hobbies. Replace content and images to personalize.</p>
+                        <p><a class="btn" href="#projects">See Projects</a> <a class="btn" href="#hobbies">See Hobbies</a></p>
                     </div>
                     <div class="hero-image">
+                        <div class="hero-decoration" aria-hidden="true">
+                            <!-- SVG wave background -->
+                            <svg class="hero-wave" viewBox="0 0 1200 200" preserveAspectRatio="none" role="img">
+                                <defs>
+                                    <linearGradient id="g1" x1="0" x2="1">
+                                        <stop offset="0%" stop-color="rgba(14,165,164,0.12)" />
+                                        <stop offset="100%" stop-color="rgba(14,165,164,0.04)" />
+                                    </linearGradient>
+                                </defs>
+                                <path d="M0,80 C150,200 350,0 600,80 C850,160 1050,40 1200,80 L1200,200 L0,200 Z" fill="url(#g1)"></path>
+                            </svg>
+                                                        <canvas id="heroCanvas" class="hero-canvas" aria-hidden="true"></canvas>
+                                                        <!-- SVG accent: glowing radial element that will pulse and parallax on scroll -->
+                                                        <svg class="hero-accent" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+                                                            <defs>
+                                                                <radialGradient id="glowGrad" cx="50%" cy="40%" r="60%">
+                                                                    <stop offset="0%" stop-color="rgba(14,165,164,0.95)" />
+                                                                    <stop offset="50%" stop-color="rgba(14,165,164,0.35)" />
+                                                                    <stop offset="100%" stop-color="rgba(14,165,164,0)" />
+                                                                </radialGradient>
+                                                            </defs>
+                                                            <circle cx="140" cy="40" r="48" fill="url(#glowGrad)" class="glow" />
+                                                        </svg>
+                                                        <!-- Particle controls (desktop only) -->
+                                                        <div id="particleControls" class="particle-controls" aria-hidden="false">
+                                                            <label>Count <input id="particleCount" type="range" min="6" max="120" value="22"></label>
+                                                            <label>Size <input id="particleSize" type="range" min="2" max="28" value="14"></label>
+                                                            <label>Speed <input id="particleSpeed" type="range" min="0.5" max="3.5" step="0.1" value="1"></label>
+                                                            <label>Palette
+                                                                <select id="particlePalette">
+                                                                    <option value="teal">Innovation Teal</option>
+                                                                    <option value="soft">Soft Greens</option>
+                                                                    <option value="mono">Muted Gray</option>
+                                                                </select>
+                                                            </label>
+                                                        </div>
+                        </div>
                         <div class="photo-frame">
-                            <img id="profileImage" src="https://via.placeholder.com/400x400.png?text=Your+Photo" alt="Your photo">
+                            <img id="profileImage" src="https://via.placeholder.com/400x400.png?text=Your+Photo" alt="Jayachandran profile photo">
                         </div>
                         <p class="photo-note">Replace this image by setting `src` to your file (e.g., <code>assets/me.jpg</code>).</p>
                     </div>
@@ -126,10 +165,10 @@
             </section>
         </main>
 
-        <footer class="site-footer">
+        <footer class="site-footer" role="contentinfo">
             <div class="container">© <span id="year"></span> Jayachandran — Built with a clean responsive layout.</div>
         </footer>
-        <!-- Project detail modal (populated by JS) -->
+                <!-- Project detail modal (populated by JS) -->
         <div id="projectModal" class="modal" aria-hidden="true">
             <div class="modal-inner" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
                 <button class="modal-close" aria-label="Close">✕</button>
@@ -140,6 +179,31 @@
                 <p><a id="modalLink" class="btn" href="#" target="_blank" rel="noopener">Open Project</a></p>
             </div>
         </div>
+
+                <!-- Inline SVG sprite for icons (inlined to ensure <use> references work reliably) -->
+                <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+                    <symbol id="running" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M13 3a2 2 0 110 4 2 2 0 010-4zM5.5 20.5l2.5-6 3 1-.5 2.5L9 20.5H5.5zM21 18.5l-1.5-1.5-4 2 .5 1.5L21 18.5zM14 11l3-1 2 2-1 3-3-1-1-3z"/>
+                    </symbol>
+                    <symbol id="cycling" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M5 16a3 3 0 100 6 3 3 0 000-6zm11-9a3 3 0 100 6 3 3 0 000-6zM6 15l4-5 3 1 3 5"/>
+                    </symbol>
+                    <symbol id="photography" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M4 7h2l1-2h6l1 2h2a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V9a2 2 0 012-2zM12 10a3 3 0 100 6 3 3 0 000-6z"/>
+                    </symbol>
+                    <symbol id="reading" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M3 5v14a1 1 0 001 1h14"/>
+                    </symbol>
+                    <symbol id="cooking" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M7 2v7h3V2H7zm7 0v7h3V2h-3zM4 12h16v2a6 6 0 01-6 6H10a6 6 0 01-6-6v-2z"/>
+                    </symbol>
+                    <symbol id="project" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M3 7h18v10H3z"/>
+                    </symbol>
+                    <symbol id="code" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M8.5 16.5L3 12l5.5-4.5M15.5 7.5L21 12l-5.5 4.5"/>
+                    </symbol>
+                </svg>
 
         <script src="assets/scripts.js"></script>
     </body>
