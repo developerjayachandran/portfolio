@@ -116,6 +116,22 @@
     line-height: 1;
     box-shadow: 0 0 16px rgba(79,142,247,0.35);
   }
+  .nav-brand{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+  }
+  .nav-brand > *{ min-width: 0; }
+  .nav-name{
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+    white-space: nowrap;
+    margin: 0;
+  }
   .status-pill{
     display: flex;
     align-items: center;
@@ -128,7 +144,7 @@
     padding: 6px 14px;
     white-space: nowrap;
   }
-  .status-pill .dot{
+    .status-pill .dot{
     width: 7px; height: 7px;
     background: var(--orange);
     border-radius: 50%;
@@ -273,6 +289,16 @@
     font-weight: 600;
     color: var(--orange);
     margin-bottom: 6px;
+  }
+  .dp{
+    width: 40px;
+    height: 40px;
+    border-radius: 55%;
+    border: 1px solid var(--blue);
+    color: var(--blue);
+    line-height: 1;
+    box-shadow: 0 0 16px rgba(79,142,247,0.35);
+    box-shadow: inset 0 0 16px rgba(0, 93, 168, 0.35);
   }
   .metric-label{ font-size: 13.5px; color: var(--ink-soft); }
 
@@ -500,7 +526,10 @@
 
 <header>
   <nav aria-label="Main navigation">
-    <div class="logo">JM</div>
+    <div class="nav-brand">
+      <img class="dp" src="assets/dp.png" alt="Jayachandran">
+      <div class="nav-name">Jayachandran</div>
+    </div>
     <div class="status-pill"><span class="dot"></span>Open to work · Immediate joiner</div>
     <ul class="nav-links" id="navLinks">
       <li><a href="#work">Work</a></li>
@@ -508,7 +537,8 @@
       <li><a href="#stack">Stack</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
-    <a class="btn-resume" href="assets/Jayachandran_M_Fullstack_Resume_july_2026.pdf" download>Résumé ↓</a>
+    <a class="btn-resume" href="assets/Jayachandran_M_Fullstack_Resume_july_2026.pdf" download>Resume ↓</a>
+
     <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle navigation menu" aria-expanded="false">☰</button>
   </nav>
 </header>
