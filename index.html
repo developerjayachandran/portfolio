@@ -230,6 +230,7 @@
     justify-content: center;
     gap: 16px;
     margin-top: 28px;
+    margin-bottom: 15px;
     flex-wrap: wrap;
   }
   .btn-primary, .btn-secondary{
@@ -783,6 +784,11 @@
     .cursor-glow{ display: none; }
     html{ scroll-behavior: auto; }
   }
+  @media (max-width:680px){
+    section.block{
+        margin: 15px;
+    }
+}
 
   @media (max-width: 960px){
     .chips-grid{ grid-template-columns: repeat(3, 1fr); }
@@ -866,7 +872,7 @@
         <span class="line"><span class="prompt">$</span> whoami</span>
         <span class="line"><span class="val">jayachandran-m — full-stack developer</span></span>
         <span class="line"><span class="prompt">$</span> uptime --production</span>
-        <span class="line"><span class="val">22 months · Vue.js / Vuetify / Laravel</span></span>
+        <span class="line"><span class="val">22 months · React.js / Node.js / Vue.js / Vuetify / Laravel</span></span>
         <span class="line"><span class="prompt">$</span> status --check</span>
         <span class="line"><span class="ok">✓ open_to_work: true</span></span>
         <span class="line"><span class="prompt">$</span> <span class="terminal-cursor"></span></span>
@@ -918,7 +924,7 @@
       </div>
       <p class="exp-sub">Product: Rental &amp; Sales Management Platform (SaaS)</p>
       <ul class="spec-list">
-        <li>Built and maintained scalable product features using Vue.js, Vue 3, Vuetify, Laravel and REST APIs</li>
+        <li>Built and maintained scalable product features using React.js, Node.js, Vue.js, Vue 3, Vuetify, Laravel and REST APIs</li>
         <li>Developed 20+ reusable components, including invoice workflows, payment modules and WhatsApp notification configuration</li>
         <li>Delivered 5+ major business workflows: Invoice Management, Transfer Orders, Custom Coupons, Discount Slabs, Notification Configuration</li>
         <li>Wrote unit tests for business-critical logic using Vitest, improving regression coverage on core workflows</li>
