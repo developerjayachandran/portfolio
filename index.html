@@ -23,6 +23,8 @@
     --pink: #F06FA6;
     --max: 1120px;
     --radius: 14px;
+    --mx: 50%;
+    --my: 50%;
   }
 
   *{ margin:0; padding:0; box-sizing:border-box; }
@@ -48,6 +50,16 @@
       radial-gradient(600px circle at 50% 90%, rgba(45,212,191,0.10), transparent 60%);
   }
 
+  /* ambient cursor glow — subtle, desktop only, killed by reduced-motion */
+  .cursor-glow{
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: radial-gradient(420px circle at var(--mx) var(--my), rgba(79,142,247,0.07), transparent 70%);
+    transition: background 0.15s ease-out;
+  }
+
   .mono{ font-family: 'JetBrains Mono', monospace; }
 
   h1, h2, h3{
@@ -71,6 +83,17 @@
     transition: top 0.2s;
   }
   .skip-link:focus{ top: 12px; }
+
+  /* scroll progress bar */
+  .scroll-progress{
+    position: fixed;
+    top: 0; left: 0;
+    height: 2.5px;
+    width: 0%;
+    background: linear-gradient(90deg, var(--blue), var(--purple), var(--cyan));
+    z-index: 200;
+    transition: width 0.1s linear;
+  }
 
   .container{
     max-width: var(--max);
@@ -231,8 +254,56 @@
   }
   .btn-secondary:hover{ border-color: var(--cyan); color: var(--cyan); }
 
-  /* ---------- Strengths chips (mirrors banner badges) ---------- */
-  .chips-section{ padding: 46px 0 10px; }
+  /* ---------- Terminal boot (signature element) ---------- */
+  .terminal-section{ padding: 10px 0 46px; }
+  .terminal{
+    background: #060811;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: 0 20px 60px -30px rgba(0,0,0,0.6);
+  }
+  .terminal-bar{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: rgba(255,255,255,0.03);
+    border-bottom: 1px solid var(--line);
+  }
+  .terminal-dot{ width: 11px; height: 11px; border-radius: 50%; }
+  .terminal-dot.red{ background: #FF5F57; }
+  .terminal-dot.yellow{ background: #FEBC2E; }
+  .terminal-dot.green{ background: #28C840; }
+  .terminal-title{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-faint);
+    margin-left: 8px;
+  }
+  .terminal-body{
+    padding: 22px 24px 26px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: var(--ink-soft);
+    min-height: 168px;
+  }
+  .terminal-body .line{ display: block; margin-bottom: 9px; opacity: 0; }
+  .terminal-body .line.shown{ opacity: 1; }
+  .terminal-body .prompt{ color: var(--teal); }
+  .terminal-body .val{ color: var(--ink); }
+  .terminal-body .ok{ color: var(--cyan); }
+  .terminal-cursor{
+    display: inline-block;
+    width: 8px; height: 15px;
+    background: var(--orange);
+    vertical-align: text-bottom;
+    animation: blink 1s step-end infinite;
+  }
+  @keyframes blink{ 50%{ opacity: 0; } }
+
+  /* ---------- Strengths chips ---------- */
+  .chips-section{ padding: 6px 0 10px; }
   .chips-grid{
     display: grid;
     grid-template-columns: repeat(6, 1fr);
@@ -268,7 +339,7 @@
   .chip.c-pink .chip-icon{ background: rgba(240,111,166,0.15); color: var(--pink); border: 1px solid rgba(240,111,166,0.4); }
   .chip.c-pink:hover{ border-color: var(--pink); }
 
-  /* ---------- Metrics ---------- */
+  /* ---------- Snapshot (was "Impact Metrics") ---------- */
   .metrics{ padding: 50px 0 30px; }
   .metrics-grid{
     display: grid;
@@ -280,12 +351,12 @@
     border: 1px solid var(--line);
     border-radius: var(--radius);
     padding: 24px 20px;
-    transition: border-color 0.2s;
+    transition: border-color 0.2s, transform 0.2s;
   }
-  .metric-tile:hover{ border-color: var(--blue); }
+  .metric-tile:hover{ border-color: var(--blue); transform: translateY(-3px); }
   .metric-num{
     font-family: 'JetBrains Mono', monospace;
-    font-size: 32px;
+    font-size: 30px;
     font-weight: 600;
     color: var(--orange);
     margin-bottom: 6px;
@@ -293,18 +364,18 @@
   .dp{
     width: 40px;
     height: 40px;
-    border-radius: 55%;
+    border-radius: 50%;
     border: 1px solid var(--blue);
     color: var(--blue);
     line-height: 1;
-    box-shadow: 0 0 16px rgba(79,142,247,0.35);
     box-shadow: inset 0 0 16px rgba(0, 93, 168, 0.35);
   }
   .metric-label{ font-size: 13.5px; color: var(--ink-soft); }
 
   /* ---------- Section shared ---------- */
   section.block{ padding: 70px 0; }
-  section.block h2{ font-size: 32px; margin-bottom: 36px; }
+  section.block h2{ font-size: 32px; margin-bottom: 12px; }
+  .section-sub{ color: var(--ink-soft); font-size: 15px; margin-bottom: 32px; max-width: 560px; }
 
   /* ---------- Experience ---------- */
   .exp-card{
@@ -359,25 +430,40 @@
     top: 2px;
   }
 
-  /* ---------- Modules ---------- */
-  .modules-grid{ display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
-  .module-card{
+  /* ---------- Case studies (was "Modules") ---------- */
+  .case-list{ display: flex; flex-direction: column; gap: 20px; }
+  .case-card{
     background: var(--bg-panel);
     border: 1px solid var(--line);
     border-radius: var(--radius);
-    padding: 28px;
-    transition: border-color 0.2s, transform 0.2s;
+    overflow: hidden;
+    transition: border-color 0.2s;
   }
-  .module-card:hover{ border-color: var(--purple); transform: translateY(-3px); }
-  .module-name{
+  .case-card.open{ border-color: var(--purple); }
+  .case-head{
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 26px 28px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    color: inherit;
+    font: inherit;
+  }
+  .case-head:focus-visible{ outline: 2px solid var(--cyan); outline-offset: -2px; }
+  .case-icon{
     font-family: 'JetBrains Mono', monospace;
-    font-size: 14.5px;
-    font-weight: 600;
+    font-size: 13px;
     color: var(--cyan);
-    margin-bottom: 12px;
+    flex-shrink: 0;
   }
-  .module-desc{ color: var(--ink-soft); font-size: 14.5px; margin-bottom: 18px; }
-  .tags{ display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+  .case-title-wrap{ flex: 1; min-width: 0; }
+  .case-name{ font-size: 18px; font-weight: 600; margin-bottom: 6px; }
+  .case-tagline{ color: var(--ink-soft); font-size: 14px; }
+  .case-tags{ display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
   .tag{
     font-family: 'JetBrains Mono', monospace;
     font-size: 12px;
@@ -386,7 +472,41 @@
     padding: 4px 10px;
     border-radius: 6px;
   }
-  .module-link{
+  .case-chevron{
+    font-size: 18px;
+    color: var(--ink-faint);
+    transition: transform 0.25s ease;
+    flex-shrink: 0;
+  }
+  .case-card.open .case-chevron{ transform: rotate(180deg); color: var(--cyan); }
+  .case-body{
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+  }
+  .case-body-inner{
+    padding: 0 28px 30px;
+    border-top: 1px solid var(--line);
+    margin-top: 2px;
+    padding-top: 22px;
+  }
+  .case-grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 20px;
+  }
+  .case-block h4{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--purple);
+    margin-bottom: 8px;
+  }
+  .case-block p{ font-size: 14.5px; color: var(--ink-soft); }
+  .case-links{ display: flex; gap: 14px; margin-top: 6px; }
+  .case-link{
     font-size: 13.5px;
     font-weight: 600;
     color: var(--ink);
@@ -394,7 +514,13 @@
     border-bottom: 1.5px solid var(--ink);
     padding-bottom: 2px;
   }
-  .module-link:hover{ color: var(--cyan); border-color: var(--cyan); }
+  .case-link:hover{ color: var(--cyan); border-color: var(--cyan); }
+  .case-note{
+    font-size: 12.5px;
+    color: var(--ink-faint);
+    margin-top: 14px;
+    font-style: italic;
+  }
 
   /* ---------- Stack icon grid ---------- */
   .stack-grid{
@@ -411,16 +537,6 @@
     transition: transform 0.2s, border-color 0.2s;
   }
   .stack-item:hover{ transform: translateY(-3px); border-color: var(--blue); }
-  .stack-icon{
-    width: 40px; height: 40px;
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    margin: 0 auto 10px;
-    font-family: 'JetBrains Mono', monospace;
-    font-weight: 700;
-    font-size: 12.5px;
-    color: #0A0E1F;
-  }
   .stack-icon-img{
     width: 40px; height: 40px; display: block; margin: 0 auto 10px; border-radius: 8px; object-fit: cover;
   }
@@ -442,35 +558,210 @@
   /* ---------- Contact ---------- */
   .contact-section{ padding: 70px 0 50px; }
   .contact-line{ color: var(--ink-soft); font-size: 16.5px; margin-bottom: 32px; max-width: 540px; }
-  .contact-card{
+  .contact-bento{
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 18px;
+    max-width: 820px;
+  }
+  .bento-card{
     border: 1px solid var(--line);
     background: var(--bg-panel);
     border-radius: var(--radius);
-    max-width: 680px;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+    display: block;
     overflow: hidden;
   }
-  .cc-row{
-    display: grid;
-    grid-template-columns: 150px 1fr;
+  .bento-card:hover{ transform: translateY(-3px); }
+
+  /* LinkedIn — profile-preview style, mirrors a LinkedIn share-card layout */
+  .li-card{ position: relative; }
+  .li-card:hover{ border-color: var(--blue); }
+  .li-banner{
+    height: 92px;
+    background-image: linear-gradient(rgba(9,12,27,0.35), rgba(9,12,27,0.55)), url('assets/banner.png');
+    background-size: 66%;
+    background-position: center;
+    text-align: center;
+  }
+  .li-badge{
+    position: absolute;
+    top: 12px; right: 12px;
+    width: 30px; height: 30px;
+    border-radius: 2px;
+    background: #e6b000;
+    color: #fff;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 200;
+    font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.35);
+  }
+  .li-body{ padding: 0 22px 22px; position: relative; }
+  .li-avatar-row{ display: flex; align-items: flex-end; justify-content: space-between; }
+  .li-avatar{
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    border: 3px solid var(--bg-panel);
+    outline: 3px solid var(--bg);
+    object-fit: cover;
+    margin-top: -32px;
+    display: block;
+    background: var(--bg);
+  }
+  .li-dots{
+    font-size: 15px;
+    color: var(--ink-faint);
+    letter-spacing: 2px;
+    padding-bottom: 4px;
+  }
+  .li-name-row{ display: flex; align-items: center; gap: 6px; margin-top: 10px; }
+  .li-name{ font-size: 16.5px; font-weight: 700; }
+  .li-verified{
+    width: 15px; height: 15px;
+    border-radius: 50%;
+    background: var(--blue);
+    color: #fff;
+    font-size: 10px;
+    display: inline-flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .li-role{ font-size: 13px; color: var(--ink-soft); margin-top: 4px; line-height: 1.4; }
+  .li-meta{ font-size: 12px; color: var(--ink-faint); margin-top: 8px; }
+  .li-meta strong{ color: var(--ink-soft); font-weight: 600; }
+  .li-actions{ display: flex; align-items: center; gap: 8px; margin-top: 16px; }
+  .li-btn{
+    font-size: 13px;
+    font-weight: 600;
+    padding: 7px 18px;
+    border-radius: 20px;
+    text-align: center;
+  }
+  .li-btn.follow{ background: #0A66C2; color: #fff; text-decoration: none; }
+  .li-btn.connect{ border: 1.5px solid var(--ink-soft); color: var(--ink); text-decoration: none; }
+
+  /* WhatsApp — chat preview style */
+  .wa-card{ padding: 0; text-align: left; }
+  .wa-card:hover{ border-color: var(--teal); }
+  .wa-top{
+    display: flex; align-items: center; gap: 12px;
+    padding: 20px 22px 14px;
+  }
+  .wa-icon{
+    width: 46px; height: 46px;
+    border-radius: 50%;
+    background: #25D366;
+    color: #062B1A;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .wa-icon svg{ width: 22px; height: 22px; }
+  .wa-title{ font-size: 15.5px; font-weight: 700; }
+  .wa-status{ font-size: 12px; color: var(--teal); }
+  .wa-preview{
+    margin: 0 22px 16px;
+    background: rgba(37,211,102,0.08);
+    border: 1px solid rgba(37,211,102,0.25);
+    border-radius: 12px;
+    border-top-left-radius: 2px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .wa-foot{
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 22px 20px;
+  }
+  .wa-card .bento-cta{ color: var(--teal); }
+  .wa-card .bento-cta:hover{ color: #6EE7DA; }
+
+  /* GitHub — mini code-editor style */
+  .gh-card{ padding: 0; }
+  .gh-card:hover{ border-color: var(--purple); }
+  .gh-titlebar{
+    display: flex; align-items: center; gap: 8px;
+    padding: 11px 16px;
+    background: rgba(255,255,255,0.03);
     border-bottom: 1px solid var(--line);
   }
-  .cc-row:last-child{ border-bottom: none; }
-  .cc-key{
+  .gh-titlebar .terminal-dot{ width: 10px; height: 10px; }
+  .gh-filename{
     font-family: 'JetBrains Mono', monospace;
-    font-size: 11.5px;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
+    font-size: 12px;
     color: var(--ink-faint);
-    padding: 14px 16px;
-    border-right: 1px solid var(--line);
+    margin-left: 6px;
   }
-  .cc-val{ padding: 14px 16px; font-size: 15px; }
-  .cc-val a{
-    color: var(--cyan);
+  .gh-body{ padding: 18px 20px 20px; }
+  .gh-code{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: var(--ink-soft);
+    margin-bottom: 16px;
+  }
+  .gh-code .gk{ color: var(--purple); }
+  .gh-code .gs{ color: var(--teal); }
+  .gh-code .gc{ color: var(--ink-faint); }
+  .gh-card .bento-cta{ color: var(--purple); }
+  .gh-card .bento-cta:hover{ color: #C0A4FF; }
+
+  /* Direct contact — avatar card with two actions */
+  .dc-card{ padding: 22px; grid-column: span 1; }
+  .dc-card:hover{ border-color: var(--orange); }
+  .dc-head{ display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .dc-avatar{ width: 44px; height: 44px; border-radius: 50%; object-fit: cover; }
+  .dc-name{ font-size: 15px; font-weight: 600; }
+  .dc-role{ font-size: 12.5px; color: var(--ink-soft); }
+  .dc-actions{ display: flex; gap: 10px; }
+  .dc-btn{
+    flex: 1;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 9px 8px;
     text-decoration: none;
-    border-bottom: 1px solid rgba(56,217,232,0.35);
+    transition: border-color 0.2s, color 0.2s;
   }
-  .cc-val a:hover{ color: #8CEBF5; }
+  .dc-btn:hover{ border-color: var(--orange); color: var(--orange); }
+
+  /* Location — small pin card */
+  .loc-card{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 20px;
+    grid-column: 1 / -1;
+  }
+  .loc-card:hover{ border-color: var(--pink); }
+  .loc-icon{
+    width: 38px; height: 38px;
+    border-radius: 10px;
+    background: rgba(240,111,166,0.15);
+    border: 1px solid rgba(240,111,166,0.4);
+    color: var(--pink);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .loc-text{ flex: 1; font-size: 14px; }
+  .loc-text .loc-place{ color: var(--ink); font-weight: 500; }
+  .loc-text .loc-note{ color: var(--ink-faint); font-size: 12.5px; }
+  .loc-card .bento-cta{ color: var(--pink); white-space: nowrap; }
+  .loc-card .bento-cta:hover{ color: #F79BC1; }
+
+  .bento-cta{
+    display: inline-block;
+    font-size: 13.5px;
+    font-weight: 600;
+    border-bottom: 1.5px solid currentColor;
+    padding-bottom: 1px;
+  }
 
   footer{
     padding: 34px 0;
@@ -487,14 +778,18 @@
   @media (prefers-reduced-motion: reduce){
     .reveal{ opacity: 1; transform: none; transition: none; }
     .status-pill .dot{ animation: none; }
+    .terminal-cursor{ animation: none; }
+    .terminal-body .line{ opacity: 1; }
+    .cursor-glow{ display: none; }
     html{ scroll-behavior: auto; }
   }
 
   @media (max-width: 960px){
     .chips-grid{ grid-template-columns: repeat(3, 1fr); }
     .metrics-grid{ grid-template-columns: repeat(2, 1fr); }
-    .modules-grid{ grid-template-columns: 1fr; }
     .stack-grid{ grid-template-columns: repeat(4, 1fr); }
+    .case-grid{ grid-template-columns: 1fr; }
+    .contact-bento{ grid-template-columns: 1fr; }
   }
 
   @media (max-width: 680px){
@@ -515,13 +810,17 @@
     .stack-grid{ grid-template-columns: repeat(3, 1fr); }
     .container{ padding: 0 20px; }
     nav{ padding: 14px 20px; }
-    .cc-row{ grid-template-columns: 120px 1fr; }
+    .loc-card{ flex-wrap: wrap; }
+    .case-head{ padding: 20px; }
+    .case-body-inner{ padding: 0 20px 24px; padding-top: 18px; }
   }
 </style>
 </head>
 <body>
 
 <div class="glow-field" aria-hidden="true"></div>
+<div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+<div class="scroll-progress" id="scrollProgress"></div>
 <a href="#main-content" class="skip-link">Skip to main content</a>
 
 <header>
@@ -533,7 +832,7 @@
     <div class="status-pill"><span class="dot"></span>Open to work · Immediate joiner</div>
     <ul class="nav-links" id="navLinks">
       <li><a href="#work">Work</a></li>
-      <li><a href="#modules">Modules</a></li>
+      <li><a href="#projects">Case Studies</a></li>
       <li><a href="#stack">Stack</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
@@ -555,6 +854,26 @@
     </div>
   </section>
 
+  <section class="terminal-section container reveal">
+    <div class="terminal">
+      <div class="terminal-bar">
+        <span class="terminal-dot red"></span>
+        <span class="terminal-dot yellow"></span>
+        <span class="terminal-dot green"></span>
+        <span class="terminal-title mono">jay@portfolio ~ %</span>
+      </div>
+      <div class="terminal-body mono" id="terminalBody">
+        <span class="line"><span class="prompt">$</span> whoami</span>
+        <span class="line"><span class="val">jayachandran-m — full-stack developer</span></span>
+        <span class="line"><span class="prompt">$</span> uptime --production</span>
+        <span class="line"><span class="val">22 months · Vue.js / Vuetify / Laravel</span></span>
+        <span class="line"><span class="prompt">$</span> status --check</span>
+        <span class="line"><span class="ok">✓ open_to_work: true</span></span>
+        <span class="line"><span class="prompt">$</span> <span class="terminal-cursor"></span></span>
+      </div>
+    </div>
+  </section>
+
   <section class="chips-section container reveal">
     <p class="eyebrow mono">// STRENGTHS</p>
     <div class="chips-grid">
@@ -568,23 +887,23 @@
   </section>
 
   <section class="metrics container">
-    <p class="eyebrow mono">// IMPACT METRICS</p>
+    <p class="eyebrow mono">// SNAPSHOT</p>
     <div class="metrics-grid reveal">
       <div class="metric-tile">
-        <div class="metric-num">40%</div>
-        <div class="metric-label">↑ component reusability via config-driven Vue.js architecture</div>
+        <div class="metric-num">20+</div>
+        <div class="metric-label">reusable components shipped — invoicing, payments, notification config</div>
       </div>
       <div class="metric-tile">
-        <div class="metric-num">25%</div>
-        <div class="metric-label">↓ dev time using AI-assisted workflows &amp; GitHub Copilot</div>
+        <div class="metric-num">5+</div>
+        <div class="metric-label">major business workflows delivered end-to-end in production</div>
       </div>
       <div class="metric-tile">
-        <div class="metric-num">15+</div>
-        <div class="metric-label">production releases shipped, zero major rollback incidents</div>
+        <div class="metric-num">22 months</div>
+        <div class="metric-label">in production (Jul 2024 → May 2026), zero downtime handovers</div>
       </div>
       <div class="metric-tile">
-        <div class="metric-num">95%</div>
-        <div class="metric-label">positive user feedback on invoice &amp; notification UX</div>
+        <div class="metric-num">Vitest</div>
+        <div class="metric-label">unit tests written for business-critical logic and regressions</div>
       </div>
     </div>
   </section>
@@ -610,31 +929,97 @@
     </div>
   </section>
 
-  <section id="modules" class="block container">
-    <p class="eyebrow mono">// PROJECTS</p>
-    <h2>Modules</h2>
-    <div class="modules-grid">
-      <article class="module-card reveal">
-        <p class="module-name">// rag-chatbot</p>
-        <p class="module-desc">A Retrieval-Augmented Generation chatbot running on locally hosted models — no OpenAI APIs. Full pipeline from document ingestion to embeddings, semantic search and contextual response generation.</p>
-        <div class="tags">
-          <span class="tag">Node.js</span>
-          <span class="tag">Vector DB</span>
-          <span class="tag">Embeddings</span>
-          <span class="tag">Local LLMs</span>
+  <section id="projects" class="block container">
+    <p class="eyebrow mono">// CASE STUDIES</p>
+    <h2>Personal projects, in depth</h2>
+    <p class="section-sub">Click a project to see the problem, the approach, and how it's actually built — not just a tag list.</p>
+    <div class="case-list">
+
+      <article class="case-card reveal" id="case-rag">
+        <button class="case-head" aria-expanded="false" aria-controls="case-rag-body">
+          <span class="case-icon mono">01</span>
+          <span class="case-title-wrap">
+            <span class="case-name">RAG Chatbot — local-first document Q&amp;A</span>
+            <span class="case-tagline">A retrieval-augmented generation pipeline running entirely on locally hosted models, no OpenAI API in the loop.</span>
+            <span class="case-tags">
+              <span class="tag">Node.js</span>
+              <span class="tag">Vector DB</span>
+              <span class="tag">Embeddings</span>
+              <span class="tag">Local LLMs</span>
+            </span>
+          </span>
+          <span class="case-chevron">⌄</span>
+        </button>
+        <div class="case-body" id="case-rag-body">
+          <div class="case-body-inner">
+            <div class="case-grid">
+              <div class="case-block">
+                <h4>Problem</h4>
+                <p>Wanted to understand how a RAG system behaves end-to-end, without leaning on a hosted API to hide the hard parts — chunking, retrieval quality, and grounding a model's answers in real documents rather than its own training data.</p>
+              </div>
+              <div class="case-block">
+                <h4>Approach</h4>
+                <p>Built the full pipeline myself: document ingestion, chunking, embedding generation, vector storage, semantic retrieval, and contextual response generation — run against locally hosted models instead of a paid API.</p>
+              </div>
+              <div class="case-block">
+                <h4>Architecture</h4>
+                <p>Node.js orchestration layer coordinates ingestion and retrieval; embeddings are stored in a vector database and queried via semantic similarity search before being passed as context to the local model for response generation.</p>
+              </div>
+              <div class="case-block">
+                <h4>Hardest part</h4>
+                <p>Getting retrieval relevant enough without a hosted, pre-tuned embedding model — most of the iteration went into chunking strategy and tuning similarity search rather than the LLM call itself.</p>
+              </div>
+            </div>
+            <div class="case-links">
+              <a class="case-link" href="https://github.com/Jayachandran-dev" target="_blank" rel="noopener">View on GitHub →</a>
+            </div>
+            <p class="case-note">Repo link currently points to my GitHub profile — swap in the direct repo URL once it's public.</p>
+          </div>
         </div>
-        <a class="module-link" href="https://github.com/Jayachandran-dev" target="_blank" rel="noopener">View source →</a>
       </article>
-      <article class="module-card reveal">
-        <p class="module-name">// boutique-erp</p>
-        <p class="module-desc">A workflow-driven ERP for tailoring businesses — customer management, measurements, order tracking, billing, payments and delivery in one system, built with AI-assisted development practices.</p>
-        <div class="tags">
-          <span class="tag">Full-Stack</span>
-          <span class="tag">ERP</span>
-          <span class="tag">Workflow Design</span>
+
+      <article class="case-card reveal" id="case-erp">
+        <button class="case-head" aria-expanded="false" aria-controls="case-erp-body">
+          <span class="case-icon mono">02</span>
+          <span class="case-title-wrap">
+            <span class="case-name">Boutique/Tailoring ERP</span>
+            <span class="case-tagline">A workflow-driven system for made-to-order tailoring businesses, built with AI-assisted development practices.</span>
+            <span class="case-tags">
+              <span class="tag">Full-Stack</span>
+              <span class="tag">ERP</span>
+              <span class="tag">Workflow Design</span>
+            </span>
+          </span>
+          <span class="case-chevron">⌄</span>
+        </button>
+        <div class="case-body" id="case-erp-body">
+          <div class="case-body-inner">
+            <div class="case-grid">
+              <div class="case-block">
+                <h4>Problem</h4>
+                <p>Small tailoring/boutique businesses juggle customer measurements, custom orders, billing and delivery across notebooks, WhatsApp threads and spreadsheets — there's no off-the-shelf software built around how a made-to-order garment actually moves from measurement to delivery.</p>
+              </div>
+              <div class="case-block">
+                <h4>Approach</h4>
+                <p>Designed one system around that workflow: customer management, measurement records, order tracking, billing, payments and delivery, instead of bolting a generic inventory tool onto the business.</p>
+              </div>
+              <div class="case-block">
+                <h4>Architecture</h4>
+                <p>Full-stack app with a workflow-first data model — each order carries its own lifecycle state rather than treating tailoring like standard retail inventory. Built with AI-assisted development practices to move faster through CRUD-heavy scaffolding.</p>
+              </div>
+              <div class="case-block">
+                <h4>Hardest part</h4>
+                <p>Modeling the order lifecycle (measurement → stitching → fitting → delivery) flexibly enough to handle different garment types without the schema turning into a special case for every product.</p>
+              </div>
+            </div>
+            <div class="case-links">
+              <a class="case-link" href="https://github.com/Jayachandran-dev" target="_blank" rel="noopener">View on GitHub →</a>
+            </div>
+            <p class="case-note">Repo link currently points to my GitHub profile — swap in the direct repo URL once it's public.</p>
+          </div>
         </div>
-        <a class="module-link" href="https://github.com/Jayachandran-dev" target="_blank" rel="noopener">View source →</a>
       </article>
+
     </div>
   </section>
 
@@ -669,27 +1054,91 @@
     <p class="eyebrow mono">// CONTACT</p>
     <h2>Let's build something</h2>
     <p class="contact-line">Open to full-stack developer roles at product companies. Reach out below — happy to talk through the Vue/Laravel work, the MERN transition, or the AI-integrated projects.</p>
-    <div class="contact-card reveal">
-      <div class="cc-row">
-        <div class="cc-key mono">Email</div>
-        <div class="cc-val"><a href="mailto:jayachandranprofessional@gmail.com">jayachandranprofessional@gmail.com</a></div>
+    <div class="contact-bento reveal">
+
+      <div class="bento-card li-card">
+        <div class="li-banner">
+        </div>
+        
+        <div class="li-body">
+          <div class="li-avatar-row">
+            <img class="li-avatar" src="assets/dp.png" alt="Jayachandran">
+            <div class="li-badge mono">in</div>
+          </div>
+          <div class="li-name-row">
+            <span class="li-name">Jayachandran M</span>
+            <span class="li-verified" aria-hidden="true">✓</span>
+          </div>
+          <div class="li-role">Full-Stack Developer | Vue.js • Laravel • JavaScript | Building MERN skills</div>
+          <div class="li-meta">Hosur, Tamil Nadu, India · <strong>1000+</strong> connections</div>
+          <div class="li-actions">
+            <a class="li-btn follow" href="https://linkedin.com/in/jayachandran-m-developer" target="_blank" rel="noopener">+ Follow</a>
+            <a class="li-btn connect" href="https://linkedin.com/in/jayachandran-m-developer" target="_blank" rel="noopener">Connect</a>
+            <span class="li-dots" aria-hidden="true">•••</span>
+          </div>
+        </div>
       </div>
-      <div class="cc-row">
-        <div class="cc-key mono">Phone</div>
-        <div class="cc-val"><a href="tel:+919677511846">+91 96775 11846</a></div>
+
+      <a class="bento-card wa-card" href="https://wa.me/919677511846" target="_blank" rel="noopener">
+        <div class="wa-top">
+          <div class="wa-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-whatsapp" viewBox="0 0 16 16">
+  <path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/>
+</svg>
+          </div>
+          <div>
+            <div class="wa-title">Chat on WhatsApp</div>
+            <div class="wa-status mono">tap to message</div>
+          </div>
+        </div>
+        <div class="wa-preview">Hi! Thanks for stopping by — let's talk 👋</div>
+        <div class="wa-foot">
+          <span class="bento-cta">Open chat →</span>
+        </div>
+      </a>
+
+      <a class="bento-card gh-card" href="https://github.com/Jayachandran-dev" target="_blank" rel="noopener">
+        <div class="gh-titlebar">
+          <span class="terminal-dot red"></span>
+          <span class="terminal-dot yellow"></span>
+          <span class="terminal-dot green"></span>
+          <span class="gh-filename mono">profile.js</span>
+        </div>
+        <div class="gh-body">
+          <div class="gh-code mono">
+            <span class="gk">const</span> dev = {<br>
+            &nbsp;&nbsp;user: <span class="gs">"Jayachandran-dev"</span>,<br>
+            &nbsp;&nbsp;stack: <span class="gs">"MERN + Vue"</span>,<br>
+            &nbsp;&nbsp;status: <span class="gs">"shipping"</span><br>
+            }; <span class="gc">// view repos →</span>
+          </div>
+          <span class="bento-cta">View GitHub →</span>
+        </div>
+      </a>
+
+      <div class="bento-card dc-card">
+        <div class="dc-head">
+          <img class="dc-avatar" src="assets/dp.png" alt="Jayachandran">
+          <div>
+            <div class="dc-name">Jayachandran M</div>
+            <div class="dc-role">Full-Stack Developer</div>
+          </div>
+        </div>
+        <div class="dc-actions">
+          <a class="dc-btn" href="mailto:jayachandranprofessional@gmail.com">✉ Email</a>
+          <a class="dc-btn" href="tel:+919677511846">☎ Call</a>
+        </div>
       </div>
-      <div class="cc-row">
-        <div class="cc-key mono">LinkedIn</div>
-        <div class="cc-val"><a href="https://linkedin.com/in/jayachandran-m-developer" target="_blank" rel="noopener">jayachandran-m-developer</a></div>
-      </div>
-      <div class="cc-row">
-        <div class="cc-key mono">GitHub</div>
-        <div class="cc-val"><a href="https://github.com/Jayachandran-dev" target="_blank" rel="noopener">Jayachandran-dev</a></div>
-      </div>
-      <div class="cc-row">
-        <div class="cc-key mono">Location</div>
-        <div class="cc-val">Hosur, Tamil Nadu, IN</div>
-      </div>
+
+      <a class="bento-card loc-card" href="https://www.google.com/maps/search/?api=1&query=Hosur%2C+Tamil+Nadu%2C+India" target="_blank" rel="noopener">
+        <div class="loc-icon">⚲</div>
+        <div class="loc-text">
+          <div class="loc-place">Hosur, Tamil Nadu, IN</div>
+          <div class="loc-note">Open to remote &amp; Bangalore-based roles</div>
+        </div>
+        <span class="bento-cta">Open in Maps →</span>
+      </a>
+
     </div>
   </section>
 
@@ -702,6 +1151,9 @@
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
 
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // mobile nav
   const mobileToggle = document.getElementById('mobileToggle');
   const navLinks = document.getElementById('navLinks');
   if (mobileToggle && navLinks) {
@@ -724,7 +1176,7 @@
     });
   }
 
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // scroll-triggered reveal
   if (!reduceMotion && 'IntersectionObserver' in window) {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -738,6 +1190,70 @@
   } else {
     document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
   }
+
+  // scroll progress bar
+  const progressBar = document.getElementById('scrollProgress');
+  function updateProgress(){
+    const h = document.documentElement;
+    const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+    progressBar.style.width = scrolled + '%';
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+
+  // ambient cursor glow (desktop, motion allowed)
+  const cursorGlow = document.getElementById('cursorGlow');
+  if (!reduceMotion && window.matchMedia('(hover: hover)').matches) {
+    window.addEventListener('mousemove', (e) => {
+      document.documentElement.style.setProperty('--mx', e.clientX + 'px');
+      document.documentElement.style.setProperty('--my', e.clientY + 'px');
+    }, { passive: true });
+  } else if (cursorGlow) {
+    cursorGlow.style.display = 'none';
+  }
+
+  // terminal boot typing effect
+  const terminalLines = document.querySelectorAll('#terminalBody .line');
+  if (!reduceMotion && terminalLines.length) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          terminalLines.forEach((line, i) => {
+            setTimeout(() => line.classList.add('shown'), i * 380);
+          });
+          io.disconnect();
+        }
+      });
+    }, { threshold: 0.4 });
+    io.observe(document.getElementById('terminalBody'));
+  } else {
+    terminalLines.forEach(l => l.classList.add('shown'));
+  }
+
+  // case study accordion
+  document.querySelectorAll('.case-head').forEach(btn => {
+    const card = btn.closest('.case-card');
+    const body = card.querySelector('.case-body');
+    btn.addEventListener('click', () => {
+      const isOpen = card.classList.contains('open');
+      // close others
+      document.querySelectorAll('.case-card.open').forEach(other => {
+        if (other !== card) {
+          other.classList.remove('open');
+          other.querySelector('.case-head').setAttribute('aria-expanded', 'false');
+          other.querySelector('.case-body').style.maxHeight = null;
+        }
+      });
+      if (isOpen) {
+        card.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+        body.style.maxHeight = null;
+      } else {
+        card.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+        body.style.maxHeight = body.scrollHeight + 'px';
+      }
+    });
+  });
 </script>
 
 </body>
