@@ -1,0 +1,6 @@
+User-agent: *
+
+Allow: /
+
+Sitemap:
+https://Jayachandran-dev.github.io/sitemap.xml
